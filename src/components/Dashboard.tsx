@@ -1,12 +1,32 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UploadButtons from "./UploadButtons";
 import { trpc } from "@/app/_trpc/client";
-import { Ghost, Link } from "lucide-react";
+import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
+import Link from "next/link"; // Import Link from next/link
+import { format } from "date-fns";
+import { Button } from "./ui/button";
 
 const Dashboard = () => {
+  const [currentlyDeleting, setCurrentlyDeleting] = useState<string | null>(
+    null
+  );
+
+  const utils = trpc.useUtils();
   const { data: files, isLoading, error } = trpc.getUserFiles.useQuery();
+
+  const { mutate: deletedFile } = trpc.deleteFile.useMutation({
+    onSuccess: () => {
+      utils.getUserFiles.invalidate();
+    },
+    onMutate({ id }) {
+      setCurrentlyDeleting(id);
+    },
+    onSettled() {
+      setCurrentlyDeleting(null);
+    },
+  });
 
   // Log data and errors to the console
   useEffect(() => {
@@ -53,6 +73,24 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </Link>
+                <div className=" mt-4 grid grid-cols-4 place-items-center py-2 gap-6 text-xa text-zinc-500">
+                  <div className="flex items-center gap-2">
+                    <Plus className="h-4 w-4" />
+                    {format(new Date(file.createdAt), "MMM yyyy")}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4 " />
+                    mocked
+                  </div>
+
+                  <Button onClick={() => deletedFile({ id: file.id })}>
+                    {currentlyDeleting === file.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
               </li>
             ))}
         </ul>
