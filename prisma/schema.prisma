@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Generator for Prisma Client
+generator client {
+  provider = "prisma-client-js"
+}
+
+// PostgreSQL datasource
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model representing users in the database
+model User {
+  id                     String    @id @unique
+  email                  String    @unique
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @unique @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  files                  File[]    // Define an array of files associated with the user
+}
+
+// File model representing files in the database
+model File {
+  id                     String    @id @default(cuid())
+  name                   String
+  uploadStatus           UploadStatus @default(Pending)
+  url                    String
+  key                    String    // Assuming this should be 'key' or 'description'
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  userId                 String?   // Nullable relation to User
+  User                   User?     @relation(fields: [userId], references: [id])
+}
+
+// Enum representing upload statuses
+enum UploadStatus {
+  Pending
+  Processing
+  Complete
+  Failed
+}
