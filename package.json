@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": ">= 22.0.0"
+  },
   "dependencies": {
     "@kinde-oss/kinde-auth-nextjs": "^2.2.13",
     "@prisma/client": "^5.15.0",
@@ -28,11 +31,13 @@
     "date-fns": "^3.6.0",
     "lucide-react": "^0.394.0",
     "next": "14.2.4",
+    "pdfjs-dist": "^4.3.136",
     "react": "^18",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
     "react-loading-skeleton": "^3.4.0",
     "react-pdf": "^9.0.0",
+    "react-resize-detector": "^11.0.1",
     "stripe": "^15.11.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
