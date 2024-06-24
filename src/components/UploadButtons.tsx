@@ -1,18 +1,35 @@
 // UploadButton.tsx
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Dialog, DialogContent } from "./ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button"; // Assuming Button component is imported from './ui/button'
 import Dropzone from "react-dropzone";
-import { Cloud, Divide,File} from "lucide-react";
+import { Cloud, Divide,File, Loader2} from "lucide-react";
 import { Progress } from "./ui/progress";
 import { set } from "date-fns";
+import { useUploadThing } from "@/lib/uploadthing";
+import { useToast } from "./ui/use-toast";
+import { trpc } from "@/app/_trpc/client";
+import { useRouter } from "next/navigation";
 
 const UploadDropzone = () => {
+  const router=useRouter()
 
-    const [isUploading,setIsUploading]=useState<boolean|null>(true)
+    const [isUploading,setIsUploading]=useState<boolean|null>(false)
     const [uploadProgress, setUploadProgress] = useState<number>(0)
+
+
+    const {startUpload}=useUploadThing("pdfUploader")
+
+    const {mutate:startPolling}=trpc.getFiles.useMutation({
+      onSuccess:(file)=>{
+        router.push(`/dashboard/${file.id}`)
+      },
+      retry:true, // to eecute polling 
+      retryDelay:500
+    })
+    const {toast}=useToast()
     
     const startSimulationProgress=()=>{
         setUploadProgress(0)
@@ -35,16 +52,41 @@ const UploadDropzone = () => {
   return (
     <Dropzone
       multiple={false}
-      onDrop={(acceptedFiles) => {
+      onDrop={async(acceptedFiles) => {
         setIsUploading(true)
 
         const progressInterval=startSimulationProgress()
 
 
         //handle file uploading
+        const res=await startUpload(acceptedFiles)
+        if(!res){
+            return toast({
+                title:'somewithing went wrong',
+                description:'Please try again',
+                variant:'destructive'
+            })
+        }
+
+        const [fileResponse]=res
+        const key=fileResponse?.key
+
+        if(!key){
+            return toast({
+                title:'somewithing went wrong',
+                description:'Please try again',
+                variant:'destructive'
+            })
+        }
+
+        // for keep checking the file, if it is there in the database or not , we will use polling technique
+        
 
         clearInterval(progressInterval)
         setUploadProgress(100)
+
+
+        startPolling({key})
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
@@ -81,8 +123,17 @@ const UploadDropzone = () => {
               {isUploading ?(
                 <div className="w-full mt-4 max-w-xs mx-auto">
                     <Progress value={uploadProgress} className="h-1 w-full bg-zinc-200"/>
+                    {uploadProgress===100?(
+                      <div className="flex gap-1 items-center justify-center text-sm text-zinc-700 text-center p-2 ">
+                         <Loader2 className="h3 w-3 animate-spin"/>
+                         redirecting..
+                      </div>
+                     
+                    ):null}
                 </div>
               ):null}
+
+              <input {...getInputProps()} type="file"  id='dropzome-file' className="hidden" />
             </label>
           </div>
         </div>
