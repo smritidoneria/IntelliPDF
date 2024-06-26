@@ -12,7 +12,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User model representing users in the database
 model User {
   id                     String    @id @unique
   email                  String    @unique
@@ -20,20 +19,22 @@ model User {
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @unique @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-  files                  File[]    // Define an array of files associated with the user
+  files                  File[]
+  Message                Message[]
 }
 
 // File model representing files in the database
 model File {
-  id                     String    @id @default(cuid())
-  name                   String
-  uploadStatus           UploadStatus @default(Pending)
-  url                    String
-  key                    String    // Assuming this should be 'key' or 'description'
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
-  userId                 String?   // Nullable relation to User
-  User                   User?     @relation(fields: [userId], references: [id])
+  id           String       @id @default(cuid())
+  name         String
+  uploadStatus UploadStatus @default(Pending)
+  url          String
+  key          String
+  messages     Message[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  userId       String? // Nullable relation to User
+  User         User?        @relation(fields: [userId], references: [id])
 }
 
 // Enum representing upload statuses
@@ -42,4 +43,17 @@ enum UploadStatus {
   Processing
   Complete
   Failed
+}
+
+model Message {
+  id   String @id @default(cuid())
+  text String @db.Text()
+
+  isUserMessage Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  User          User?    @relation(fields: [userId], references: [id])
+  userId        String?
+  File          File?    @relation(fields: [fileId], references: [id])
+  fileId        String?
 }

@@ -3,10 +3,15 @@ import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { z } from "zod";
+import { get } from "http";
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
     const { getUser } = getKindeServerSession();
+    console.log("sission",getKindeServerSession())
+    
     const user = await getUser();
+    console.log("getuser",getUser())
+    console.log("user", user);
 
     if (!user?.id || !user?.email)
       throw new TRPCError({ code: "UNAUTHORIZED" });
