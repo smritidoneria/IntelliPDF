@@ -13,6 +13,7 @@ import OpenAI from "openai";
 import { Stream } from "stream";
 import genAI from "genai"; // Replace 'genAI-library' with the actual library name or path
 import Gemini from "gemini-ai";
+import { json } from "stream/consumers";
 
 if (!process.env.GOOGLE_API_KEY) {
   throw new Error(
@@ -127,17 +128,20 @@ export const POST = async (req: NextRequest) => {
     console.log("ayushhhhhh", await newChat.ask(message));
 
     const jsonResponse = JSON.stringify(newChat);
+
     console.log("newChat JSON:", jsonResponse);
+    const parsedResponse = JSON.parse(jsonResponse);
+const textParts = parsedResponse.messages[5].parts[0].text;
     await db.message.create({
         data: {
-          text: jsonResponse   ,
+          text: textParts   ,
           isUserMessage: false,
           userId: user!.id,
           fileId: fileId,
         },
       });
 
-   return new Response(JSON.stringify(newChat), { status: 200 });
+   return new Response(textParts, { status: 200 });
 
    
   } catch (error) {
