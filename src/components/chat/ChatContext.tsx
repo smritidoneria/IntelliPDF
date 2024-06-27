@@ -45,6 +45,7 @@ export const ChatContextProvider=({fileId,children}:Props)=>{
     })
 
     const addMessage=()=>{
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&",message)
         sendMessage({message})
     }
 
