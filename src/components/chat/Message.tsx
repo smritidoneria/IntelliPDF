@@ -77,4 +77,6 @@ const Message = forwardRef<HTMLDivElement, MessageProps>(({ message, isNextMessa
       </div>
     );
   })
+
+Message.displayName = "Message";
 export default Message;

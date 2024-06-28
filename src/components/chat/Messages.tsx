@@ -100,4 +100,6 @@ const Messages = ({ fileId }: MessagesProps) => {
     </div>
   );
 };
+
+Messages.displayName = "Messages";
 export default Messages;
