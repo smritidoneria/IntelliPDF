@@ -1,0 +1,28 @@
+export const PLANS=[
+    {
+        name:"Free",
+        slug:"Free",
+        quota:10,
+        pagesPerPdf:5,
+        prices:{
+            amount:0,
+            priceIds:{
+                test:'',
+                production:'',
+            }
+        }
+    },
+    {
+        name:"Pro",
+        slug:"Pro",
+        quota:50,
+        pagesPerPdf:14,
+        prices:{
+            amount:0,
+            priceIds:{
+                test:'price_1PWTNXLvrLe7VHtK9T5bOIfy',
+                production:'',
+            }
+        }
+    }
+]

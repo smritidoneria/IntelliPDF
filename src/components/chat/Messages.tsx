@@ -4,7 +4,8 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { Loader2, MessageSquare } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import Message from "./Message";
-import { useContext } from "react";
+import { use, useContext, useEffect, useRef } from "react";
+import { useIntersection } from "@mantine/hooks";
 import { ChatContext } from "./ChatContext";
 
 interface MessagesProps {
@@ -12,8 +13,7 @@ interface MessagesProps {
 }
 
 const Messages = ({ fileId }: MessagesProps) => {
-
-  const {isLoading:isAIThiniking}=useContext(ChatContext)
+  const { isLoading: isAIThiniking } = useContext(ChatContext);
   const { data, isLoading, fetchNextPage } =
     trpc.getFileMessage.useInfiniteQuery(
       {
@@ -42,29 +42,61 @@ const Messages = ({ fileId }: MessagesProps) => {
     ...(isAIThiniking ? [loadingMessages] : []),
     ...(messages ?? []),
   ];
+
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
+  const {ref,entry}=useIntersection({
+   
+    root:lastMessageRef.current,
+ 
+    threshold:1
+  })
+
+  useEffect(()=>{
+    if(entry?.isIntersecting){
+      fetchNextPage()
+    }
+  }
+  ,[entry,fetchNextPage])
   return (
     <div className="flex max-h-[calc(100vh-3.5rem-7rem)] border-zinc-200 flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-      {combinedMessages&& combinedMessages.length > 0 ? (
-        combinedMessages.map((message,i)=>{
+      {combinedMessages && combinedMessages.length > 0 ? (
+        combinedMessages.map((message, i) => {
           //edge case
-          const isMessagesameMessage=combinedMessages[i-1]?.isUserMessage===combinedMessages[i]?.isUserMessage
-          if(i===combinedMessages.length-1){
-            return <Message key={message.id} isNextMessageSamePerson={isMessagesameMessage} message={message}/>
-          }else{
-            return <Message key={message.id} isNextMessageSamePerson={isMessagesameMessage} message={message}/>
+          const isMessagesameMessage =
+            combinedMessages[i - 1]?.isUserMessage ===
+            combinedMessages[i]?.isUserMessage;
+          if (i === combinedMessages.length - 1) {
+            return (
+              <Message
+              ref={ref}
+                key={message.id}
+                isNextMessageSamePerson={isMessagesameMessage}
+                message={message}
+              />
+            );
+          } else {
+            return (
+              <Message
+                key={message.id}
+                isNextMessageSamePerson={isMessagesameMessage}
+                message={message}
+              />
+            );
           }
-            
-          
         })
-      ):isLoading?(<div className="w-full flex-flex-col gap-2">
-        <Skeleton className="h-16"/>
-        <Skeleton className="h-16"/>
-        <Skeleton className="h-16"/>
-      </div>):<div className="flex-1 flex flex-col justify-center items-center gap-2">
-        <MessageSquare className="h-8 w-8 text-blue-500"/>
-        <h3 className="font-semibold text-xl">You&pos re all set</h3>
-        <p>Ask your question</p>
-        </div>}
+      ) : isLoading ? (
+        <div className="w-full flex-flex-col gap-2">
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+        </div>
+      ) : (
+        <div className="flex-1 flex flex-col justify-center items-center gap-2">
+          <MessageSquare className="h-8 w-8 text-blue-500" />
+          <h3 className="font-semibold text-xl">You&pos re all set</h3>
+          <p>Ask your question</p>
+        </div>
+      )}
     </div>
   );
 };
