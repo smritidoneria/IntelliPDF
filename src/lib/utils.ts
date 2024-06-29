@@ -19,8 +19,8 @@ export function absoluteUrl(path:string){
 
 
 export function constructMetadata({
-  title = "Quill - the SaaS for students",
-  description = "Quill is an open-source software to make chatting to your PDF files easy.",
+  title = "IntelliPDF - the SaaS for students",
+  description = "IntelliPDF is an open-source software to make chatting to your PDF files easy.",
   image = "/thumbnail.png",
   icons = "/favicon.ico",
   noIndex = false
@@ -48,10 +48,10 @@ export function constructMetadata({
       title,
       description,
       images: [image],
-      creator: "@joshtriedcoding"
+      creator: "@smritidoneria"
     },
     icons,
-    metadataBase: new URL('https://quill-jet.vercel.app'),
+    metadataBase: new URL('https://intelli-pdf-uj4l.vercel.app'),
     themeColor: '#FFF',
     ...(noIndex && {
       robots: {
