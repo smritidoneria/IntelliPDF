@@ -60,6 +60,7 @@ const UploadDropzone = () => {
 
         //handle file uploading
         const res=await startUpload(acceptedFiles)
+        console.log("response",res)
         if(!res){
             return toast({
                 title:'somewithing went wrong',
@@ -70,6 +71,8 @@ const UploadDropzone = () => {
 
         const [fileResponse]=res
         const key=fileResponse?.key
+
+        console.log("key",key)
 
         if(!key){
             return toast({
