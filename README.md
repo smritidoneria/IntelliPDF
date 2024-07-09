@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Intellipdf
 
-## Getting Started
+Intellipdf is an innovative application designed to read PDFs and interact with users through questions based on the content. Built with Next.js, Intellipdf offers a seamless and intuitive user experience.
 
-First, run the development server:
+Key Features
 
-```bash
+Zoom Functionality: Easily zoom in and out of PDF documents for better readability.
+Pinecone Vectorization: Utilize semantic querying to find relevant information within the PDFs quickly and efficiently.
+Authentication via Kinde Auth: Secure and easy authentication for users.
+Payment Gateway via Stripe: Integrated Stripe payment gateway for handling transactions.
+TRPC Backend: A robust backend built with TypeScript and TRPC.
+Installation
+
+Clone the repository:
+bash
+Copy code
+git clone https://github.com/your-username/intellipdf.git
+Navigate to the project directory:
+bash
+Copy code
+cd intellipdf
+Install the dependencies:
+bash
+Copy code
+npm install
+Usage
+
+Start the development server:
+bash
+Copy code
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Open your browser and navigate to http://localhost:3000.
+Configuration
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Environment Variables
+Create a .env.local file in the root of your project and add the following environment variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+env
+Copy code
+NEXT_PUBLIC_KIND_AUTH_DOMAIN=your_kinde_auth_domain
+NEXT_PUBLIC_KIND_AUTH_CLIENT_ID=your_kinde_auth_client_id
+STRIPE_SECRET_KEY=your_stripe_secret_key
+PINECONE_API_KEY=your_pinecone_api_key
+Replace the placeholder values with your actual credentials.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Contributing
 
-## Learn More
+We welcome contributions! Please follow these steps to contribute:
 
-To learn more about Next.js, take a look at the following resources:
+Fork the repository.
+Create a new branch (git checkout -b feature/YourFeature).
+Commit your changes (git commit -m 'Add some feature').
+Push to the branch (git push origin feature/YourFeature).
+Open a pull request.
+License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Contact
 
-## Deploy on Vercel
+For any questions or inquiries, please reach out to your-email@example.com.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Feel free to customize the README further based on your specific requirements!
