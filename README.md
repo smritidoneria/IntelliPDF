@@ -10,6 +10,9 @@ Intellipdf is an innovative application designed to read PDFs and interact with 
 - **Payment Gateway via Stripe:** Integrated Stripe payment gateway for handling transactions.
 - **TRPC Backend:** A robust backend built with TypeScript and TRPC.
 
+
+## Deployement
+https://intelli-pdf-uj4l.vercel.app
 ## Getting Started
 
 ### Prerequisites
@@ -46,6 +49,10 @@ NEXT_PUBLIC_KIND_AUTH_DOMAIN=your_kinde_auth_domain
 NEXT_PUBLIC_KIND_AUTH_CLIENT_ID=your_kinde_auth_client_id
 STRIPE_SECRET_KEY=your_stripe_secret_key
 PINECONE_API_KEY=your_pinecone_api_key
+
+
+
+
   
 
  
