@@ -3,16 +3,21 @@
 Intellipdf is an innovative application designed to read PDFs and interact with users through questions based on the content. Built with Next.js, Intellipdf offers a seamless and intuitive user experience.
 
 ## Key Features
-
 - **Zoom Functionality:** Easily zoom in and out of PDF documents for better readability.
 - **Pinecone Vectorization:** Utilize semantic querying to find relevant information within the PDFs quickly and efficiently.
 - **Authentication via Kinde Auth:** Secure and easy authentication for users.
 - **Payment Gateway via Stripe:** Integrated Stripe payment gateway for handling transactions.
 - **TRPC Backend:** A robust backend built with TypeScript and TRPC.
 
+https://github.com/user-attachments/assets/7a226f19-3cf4-4f36-8afd-b7e38919c2cb
 
-## Deployement
+
+
+
+
+## Deployment
 https://intelli-pdf-uj4l.vercel.app
+
 ## Getting Started
 
 ### Prerequisites
